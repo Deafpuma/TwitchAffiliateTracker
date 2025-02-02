@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "530286876886",
+    "project_id": "twitchstreamtracker-6e480",
+    "storage_bucket": "twitchstreamtracker-6e480.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530286876886:android:900f03a442990bcfe41177",
+        "android_client_info": {
+          "package_name": "com.Deafpuma.affiliate_helper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vMesgkVFB-v097e0y4JWHhkXLIjJsZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530286876886:android:20fd07761c6ce37ee41177",
+        "android_client_info": {
+          "package_name": "com.Deafpuma.newaffiliatehelper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vMesgkVFB-v097e0y4JWHhkXLIjJsZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530286876886:android:330d802d49b16d5ce41177",
+        "android_client_info": {
+          "package_name": "com.Deafpuma.twitchaffiliatetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vMesgkVFB-v097e0y4JWHhkXLIjJsZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

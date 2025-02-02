@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace "com.Deafpuma.twitchaffiliatetracker"
+    compileSdkVersion 34 // ✅ Ensure this is set to 34
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId "com.Deafpuma.twitchaffiliatetracker"
+        minSdkVersion 23 // ✅ Ensure this is at least 23
+        targetSdkVersion 34 // ✅ Ensure this is 34
+        versionCode 1 // ✅ Manually set this if `flutter.versionCode` causes issues
+        versionName "1.0" // ✅ Manually set this if `flutter.versionName` causes issues
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false  // ✅ Disable R8 for Debug Builds
+        }
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source "../.."
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'com.google.android.gms:play-services-ads:22.4.0'
+
+}
