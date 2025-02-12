@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,15 +33,27 @@ class AuthService {
 
   // 🔹 Sign in with Twitch
   Future<User?> signInWithTwitch() async {
-    final String clientId = "YOUR_TWITCH_CLIENT_ID";
-    final String redirectUri = "YOUR_REDIRECT_URI";
+    final String clientId = "7ey7qjp0jpir4brr6uo6zb6ztmfn6z";
+    final String redirectUri = "https://twitchstreamtracker-6e480.firebaseapp.com/__/auth/handler";
     final String authUrl =
         "https://id.twitch.tv/oauth2/authorize?client_id=$clientId&redirect_uri=$redirectUri&response_type=token&scope=user:read:email";
 
-    // Open WebView or browser for Twitch OAuth login
-    // Once the access token is received, send it to Firebase
+    try {
+      // Open external browser for Twitch login
+      if (await canLaunch(authUrl)) {
+        await launch(authUrl, forceSafariVC: false, forceWebView: false);
+      } else {
+        print("Could not launch Twitch login.");
+        return null;
+      }
 
-    return null; // Replace with actual authentication logic
+      // Normally, we would handle the redirect and extract the access token here.
+      // Since Twitch only supports HTTPS redirects, Firebase authentication should handle this step.
+      return null;
+    } catch (e) {
+      print("Twitch Sign-in error: $e");
+      return null;
+    }
   }
 
   // 🔹 Sign up with Email & Password
