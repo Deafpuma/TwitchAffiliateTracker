@@ -4,12 +4,12 @@ import 'package:firebase_core_platform_interface/firebase_core_platform_interfac
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     return FirebaseOptions(
-      apiKey: "YOUR_API_KEY",
-      appId: "YOUR_APP_ID",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      projectId: "YOUR_PROJECT_ID",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      storageBucket: "YOUR_STORAGE_BUCKET",
+      apiKey: "AIzaSyCX29RECycGU2fS3GpF5FwNwvRiPMycuNY",
+      appId: "1:530286876886:android:c6a6e6e617a8b843e41177",
+      messagingSenderId: "530286876886",
+      projectId: "twitchstreamtracker-6e480",
+      authDomain: "twitchstreamtracker-6e480.firebaseapp.com",
+      storageBucket: "twitchstreamtracker-6e480.appspot.com",
     );
   }
 }
