@@ -1,4 +1,4 @@
-name: twitch_affiliate_tracker
+name: newaffiliatehelper
 version: 1.0.0+1
 description: A Flutter app for tracking Twitch analytics and progress towards Affiliate/Partner status.
 publish_to: 'none'
@@ -28,10 +28,25 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   in_app_purchase: ^3.1.8
   flutter_dotenv: ^5.1.0
+  flutter_lints: ^5.0.0
+  video_player: ^2.7.2
+  fl_chart: ^0.70.2
+  firebase_analytics: ^11.4.2
+  firebase_core_platform_interface: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - .env
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
