@@ -1,42 +1,38 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/twitch_service.dart';
 
-class LoginScreen extends StatelessWidget {
-  final AuthService _authService = AuthService();
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TwitchService _twitchService = TwitchService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((User? user) {
+      if (user != null) {
+        print("✅ User detected: ${user.uid}, navigating to Home...");
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login to Twitch Affiliate Tracker")),
+      appBar: AppBar(title: Text("Login to Twitch")),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                var user = await _authService.signInWithGoogle();
-                if (user != null) {
-                  Navigator.pushReplacementNamed(context, '/home');
-                }
-              },
-              child: Text("Sign in with Google"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                var user = await _authService.signInWithTwitch();
-                if (user != null) {
-                  Navigator.pushReplacementNamed(context, '/home');
-                }
-              },
-              child: Text("Sign in with Twitch"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/email_login');
-              },
-              child: Text("Sign in with Email"),
-            ),
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            print("🟢 Opening Twitch login page...");
+            _twitchService.authenticate();
+          },
+          child: Text("Sign in with Twitch"),
         ),
       ),
     );

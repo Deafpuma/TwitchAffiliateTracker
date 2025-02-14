@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <application>
 
+        <meta-data
+            android:name="com.google.firebase.API_KEY"
+            android:value="AIzaSyCX29RECycGU2fS3GpF5FwNwvRiPMycuNY"/> <!-- Added Firebase API Key -->
+
         <activity
             android:name="com.deafpuma.twitchaffiliatetracker.MainActivity"
             android:exported="true"

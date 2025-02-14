@@ -1,54 +1,21 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TwitchService {
-  final String clientId = dotenv.env['TWITCH_CLIENT_ID'] ?? "";
-  final String clientSecret = dotenv.env['TWITCH_CLIENT_SECRET'] ?? "";
-  String? accessToken;
+  final String clientId = "7ey7qjp0jpir4brr6uo6zb6ztmfn6z"; // Your Twitch Client ID
+  final String redirectUri = "https://twitchstreamtracker-6e480.firebaseapp.com/__/auth/handler"; // Firebase Redirect URI
 
   Future<void> authenticate() async {
-    if (clientId.isEmpty || clientSecret.isEmpty) {
-      throw Exception('Missing Twitch API credentials in .env file');
-    }
+    final String authUrl = "https://id.twitch.tv/oauth2/authorize"
+        "?client_id=$clientId"
+        "&redirect_uri=$redirectUri"
+        "&response_type=token"
+        "&scope=user:read:email";
 
-    final response = await http.post(
-      Uri.parse('https://id.twitch.tv/oauth2/token'),
-      body: {
-        'client_id': clientId,
-        'client_secret': clientSecret,
-        'grant_type': 'client_credentials',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      accessToken = data['access_token'];
+    // Open Twitch login in external browser
+    if (await canLaunch(authUrl)) {
+      await launch(authUrl, forceSafariVC: false, forceWebView: false);
     } else {
-      throw Exception('Failed to authenticate with Twitch: ${response.body}');
-    }
-  }
-
-  Future<Map<String, dynamic>> getUserData(String username) async {
-    if (accessToken == null) await authenticate();
-
-    final response = await http.get(
-      Uri.parse('https://api.twitch.tv/helix/users?login=$username'),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-        'Client-Id': clientId,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['data'].isNotEmpty) {
-        return data['data'][0];
-      } else {
-        throw Exception('User not found');
-      }
-    } else {
-      throw Exception('Failed to fetch Twitch user data: ${response.body}');
+      print("❌ Could not launch Twitch login page.");
     }
   }
 }
