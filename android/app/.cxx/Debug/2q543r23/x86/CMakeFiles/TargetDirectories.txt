@@ -1,0 +1,2 @@
+C:/Users/joshu/StudioProjects/twitchaffiliatetracker/android/app/.cxx/Debug/2q543r23/x86/CMakeFiles/edit_cache.dir
+C:/Users/joshu/StudioProjects/twitchaffiliatetracker/android/app/.cxx/Debug/2q543r23/x86/CMakeFiles/rebuild_cache.dir

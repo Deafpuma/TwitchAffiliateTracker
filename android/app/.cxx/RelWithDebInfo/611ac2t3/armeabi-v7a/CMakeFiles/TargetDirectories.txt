@@ -1,0 +1,2 @@
+C:/Users/joshu/StudioProjects/twitchaffiliatetracker/android/app/.cxx/RelWithDebInfo/611ac2t3/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/joshu/StudioProjects/twitchaffiliatetracker/android/app/.cxx/RelWithDebInfo/611ac2t3/armeabi-v7a/CMakeFiles/rebuild_cache.dir
