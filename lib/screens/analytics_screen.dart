@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/twitch_service.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 
 class AnalyticsScreen extends StatefulWidget {
   @override
@@ -21,7 +19,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   Future<void> _fetchTwitchData() async {
     try {
-      var userData = await _twitchService.getUserData("your_twitch_username");
+      var userData = await _twitchService.getUserData();
       setState(() {
         _userData = userData;
         _loading = false;

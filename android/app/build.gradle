@@ -3,15 +3,17 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services" // ✅ Firebase Services Plugin
 }
 
 android {
-    namespace "com.Deafpuma.twitchaffiliatetracker"
-    compileSdkVersion 34 // ✅ Ensure this is set to 34
+    namespace = "com.deafpuma.twitchaffiliatetracker"
+    compileSdk = 34 // ✅ Explicit compileSdk version
+    ndkVersion = "26.1.10909125" // ✅ Ensure correct NDK version
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
@@ -19,32 +21,34 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.Deafpuma.twitchaffiliatetracker"
-        minSdkVersion 23 // ✅ Ensure this is at least 23
-        targetSdkVersion 34 // ✅ Ensure this is 34
-        versionCode 1 // ✅ Manually set this if `flutter.versionCode` causes issues
-        versionName "1.0" // ✅ Manually set this if `flutter.versionName` causes issues
+        applicationId "com.deafpuma.twitchaffiliatetracker"
+        minSdk = 24
+        targetSdk = 34 // ✅ Explicit target SDK version
+        versionCode = 1
+        versionName = "1.0"
+
+        multiDexEnabled true // ✅ Required for larger projects
+        resValue "integer", "google_play_services_version", "12451000"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false  // ✅ Disable R8 for Debug Builds
-        }
         release {
+            signingConfig = signingConfigs.debug
+            shrinkResources true
             minifyEnabled true
-            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 flutter {
-    source "../.."
+    source = "../.."
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'com.google.android.gms:play-services-ads:22.4.0'
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22" // ✅ Ensure correct Kotlin version
+    implementation 'com.google.android.gms:play-services-base:18.3.0' // ✅ Fix @integer/google_play_services_version
+    implementation 'com.google.firebase:firebase-messaging:23.2.1'
+    implementation 'androidx.core:core-ktx:1.10.1'
 }
+

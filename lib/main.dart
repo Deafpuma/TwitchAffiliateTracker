@@ -1,41 +1,43 @@
-// Main entry point for the Twitch Affiliate Tracker Flutter app
-
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'firebase_options.dart'; // Import generated Firebase config
+import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await dotenv.load(fileName: ".env");
-  runApp(MyApp());
+  await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env"); // ✅ Load environment variables
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Twitch Affiliate Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: HomePage(),
+      theme: ThemeData(primarySwatch: Colors.purple),
+      home: const AuthWrapper(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Twitch Affiliate Tracker'),
-      ),
+      appBar: AppBar(title: const Text("Twitch Login")),
       body: Center(
-        child: Text('Welcome to Twitch Affiliate Tracker!'),
+        child: ElevatedButton(
+          onPressed: () async {
+            await AuthService().signInWithTwitch();
+          },
+          child: const Text("Login with Twitch"),
+        ),
       ),
     );
   }

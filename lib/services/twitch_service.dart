@@ -1,54 +1,40 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class TwitchService {
   final String clientId = dotenv.env['TWITCH_CLIENT_ID'] ?? "";
   final String clientSecret = dotenv.env['TWITCH_CLIENT_SECRET'] ?? "";
-  String? accessToken;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> authenticate() async {
-    if (clientId.isEmpty || clientSecret.isEmpty) {
-      throw Exception('Missing Twitch API credentials in .env file');
-    }
+  Future<Map<String, dynamic>> getUserData() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("❌ User not authenticated");
 
-    final response = await http.post(
-      Uri.parse('https://id.twitch.tv/oauth2/token'),
-      body: {
-        'client_id': clientId,
-        'client_secret': clientSecret,
-        'grant_type': 'client_credentials',
-      },
-    );
+      final userDoc = await _firestore.collection("users").doc(user.uid).get();
+      final String? accessToken = userDoc.data()?["twitch_oauth_token"];
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      accessToken = data['access_token'];
-    } else {
-      throw Exception('Failed to authenticate with Twitch: ${response.body}');
-    }
-  }
+      if (accessToken == null) throw Exception("❌ No valid Twitch access token stored!");
 
-  Future<Map<String, dynamic>> getUserData(String username) async {
-    if (accessToken == null) await authenticate();
+      final response = await http.get(
+        Uri.parse('https://api.twitch.tv/helix/users'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Client-Id': clientId,
+        },
+      );
 
-    final response = await http.get(
-      Uri.parse('https://api.twitch.tv/helix/users?login=$username'),
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-        'Client-Id': clientId,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      if (data['data'].isNotEmpty) {
-        return data['data'][0];
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['data'][0];
       } else {
-        throw Exception('User not found');
+        throw Exception("❌ Failed to fetch Twitch user data: ${response.body}");
       }
-    } else {
-      throw Exception('Failed to fetch Twitch user data: ${response.body}');
+    } catch (e) {
+      print("❌ Error fetching Twitch data: $e");
+      return {};
     }
   }
 }
